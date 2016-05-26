@@ -3,13 +3,13 @@ __author__ = 'ufuktuncer'
 from eftufuktuncer import app
 from flask import render_template, request, redirect, url_for, session, Response
 from eftufuktuncer.models import *
-from .loginmanager import is_logged_in
+from .loginmanager import *
 import json
 
 
 @app.route('/')
 def welcome_page():
-    return render_template('welcome.html'), 404
+    return render_template('welcome.html', credential=get_credential()), 404
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -27,7 +27,7 @@ def login():
         else:
             error = 'Username or Password is invalid. Please try again'
 
-    return render_template('login.html', error=error), 404
+    return render_template('login.html', error=error, credential=get_credential()), 404
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -45,13 +45,13 @@ def register():
             except:
                 error = 'Oops! something went wrong. Please try again'
 
-    return render_template('register.html', error=error), 404
+    return render_template('register.html', error=error, credential=get_credential()), 404
 
 
 @app.route('/content')
 @is_logged_in
 def content():
-    return render_template('content.html')
+    return render_template('content.html', credential=get_credential())
 
 
 @app.route('/get_countries')
@@ -72,3 +72,9 @@ def get_countries():
         mimetype='application/json',
         status=200
     )
+
+@app.route('/logout')
+def logout():
+    session['logged_in'] = False
+    session['current_user'] = None
+    return redirect(url_for('welcome_page'))

@@ -1,19 +1,31 @@
-{%  extends 'base.html' %}
+{% extends 'base.html' %}
 {% block content %}
-     <div class="container">
-        <h1>Please Login</h1>
-        <br>
-        <form action="" method="post">
-            <input type="text" placeholder="Username" name="username" value="{{ request.form.username }}">
-            <input type="text" placeholder="Password" name="password" value="{{ request.form.password }}">
-            <input class="btn btn-default" type="submit" value="Login">
-        </form>
-     {% if error %}
-         <div class="alert alert-danger" role="alert">
-             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-             <span class="sr-only">Error:</span>
-             {{ error }}
-         </div>
-     {% endif %}
-     </div>
+    {% if credential %}
+        {% if credential['login'] %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>You are already logged in! Do you want to go to <span class="label label-warning"><a
+                            href="{{ url_for('content') }}">Content</a></span></h3>
+                </div>
+            </div>
+        {% else %}
+            <div class="container">
+                <h1>Please Login</h1>
+                <br>
+
+                <form action="" method="post">
+                    <input type="text" placeholder="Username" name="username" value="{{ request.form.username }}">
+                    <input type="text" placeholder="Password" name="password" value="{{ request.form.password }}">
+                    <input class="btn btn-default" type="submit" value="Login">
+                </form>
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span class="sr-only">Error:</span>
+                        {{ error }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
 {% endblock %}

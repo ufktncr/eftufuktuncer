@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
+        {% if credential %}
+            {% if credential['login'] %}
+               <div class="panel panel-default">
+                 <div class="panel-body">
+                    <h3>You are already logged in! Do you want to go to  <span class="label label-warning"><a href="{{ url_for('content') }}">Content</a></span></h3>
+                </div>
+                </div>
+             {% else %}
     <div class="container">
         <form class="form-horizontal" action="" method="post">
             <div class="form-group">
@@ -42,6 +50,8 @@
             </div>
         {% endif %}
     </div>
+    {% endif %}
+    {% endif %}
 {% endblock %}
 {% block scripts %}
 

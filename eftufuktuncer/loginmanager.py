@@ -13,3 +13,12 @@ def is_logged_in(func):
             return redirect(url_for('login'))
 
     return decorated_function
+
+
+def get_credential():
+    if session.get('logged_in') and session['logged_in']:
+        credential = {'login': True, 'name': session['current_user']}
+    else:
+        credential = {'login': False, 'name': None}
+
+    return credential
