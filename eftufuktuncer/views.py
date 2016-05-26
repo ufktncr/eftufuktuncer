@@ -3,6 +3,7 @@ __author__ = 'ufuktuncer'
 from eftufuktuncer import app
 from flask import render_template, request, redirect, url_for, session
 from eftufuktuncer.models import *
+from .loginmanager import is_logged_in
 
 
 @app.route('/')
@@ -44,9 +45,10 @@ def register():
             except:
                 error = 'Oops! something went wrong. Please try again'
 
-    return render_template('register.html', error = error), 404
+    return render_template('register.html', error=error), 404
 
 
 @app.route('/content')
+@is_logged_in
 def content():
     return render_template('content.html')
