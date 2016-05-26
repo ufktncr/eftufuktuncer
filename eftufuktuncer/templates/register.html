@@ -1,70 +1,68 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="container">
-    <form class="form-horizontal" action="" method="post">
-      <div class="form-group">
-        <label for="username" class="col-sm-2 control-label">Username</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="username" placeholder="Username" value="{{ request.form.username }}">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="inputPassword" class="col-sm-2 control-label">Password</label>
-        <div class="col-sm-10">
-          <input type="password" class="form-control" name="password" placeholder="Password" value="{{ request.form.password }}">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="inputCountry" class="col-sm-2 control-label">Country</label>
-        <div class="col-sm-10">
-{#            TODO:This field will be filled by ajax#}
-            <select id="select_country" name="country">
-                <option id="Turkey" value="Turkey">Turkey</option>
-                <option id="England" value="England">England</option>
-                <option id="United States" value="United States">United States</option>
-            </select>
-            <div class="col-sm-13">
-                <button class="btn btn-info" id="get_countries">Get Countries</button>
+        <form class="form-horizontal" action="" method="post">
+            <div class="form-group">
+                <label for="username" class="col-sm-2 control-label">Username</label>
+
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="username" placeholder="Username"
+                           value="{{ request.form.username }}">
+                </div>
             </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <input class="btn btn-default" type="submit" value="Register">
-        </div>
-      </div>
-    </form>
+            <div class="form-group">
+                <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" name="password" placeholder="Password"
+                           value="{{ request.form.password }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputCountry" class="col-sm-2 control-label">Country</label>
+
+                <div class="col-sm-10">
+                    <select id="select_country" name="country">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input class="btn btn-default" type="submit" value="Register">
+                </div>
+            </div>
+        </form>
     </div>
-    <div id="div_error">
-       {% if error %}
-           <div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span class="sr-only">Error:</span>
-            {{ error }}
+    <div>
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                {{ error }}
+            </div>
+        {% endif %}
     </div>
-       {% endif %}
-    </div>
+{% endblock %}
+{% block scripts %}
+
     <script type="text/javascript">
-    $('#get_countries').click(function() {
-        $.ajax("{{ url_for('get_countries') }}", {
-            dataType: 'json',
-            method: 'get'
-        })
+        $(document).ready(function () {
+            $.ajax("{{ url_for('get_countries') }}", {
+                dataType: 'json',
+                method: 'get'
+            })
+                    .success(function (data) {
+                        var countries_html = "";
+                        for (var i = 0; i < data.length; i++) {
+                            countries_html +=
+                                    "<option value='" + data[i].value + "'>" + data[i].name + "</option>"
+                        }
 
-                .success(function (data) {
-                    var countries_html = "";
-                    for (var i = 0; i < data.length; i++) {
-                        countries_html +=
-                                "<option value='" + data[i].value + "'>" + data[i].name + "</option>"
-                    }
+                        $('#select_country').html(countries_html);
+                    })
+                    .error(function (response) {
 
-                    $('#select_country').html(countries_html);
-                })
-                .error(function (response) {
-                    $('#div_error').append(
-                            response
-                    );
-                });
+                    });
         });
-</script>
+    </script>
 {% endblock %}

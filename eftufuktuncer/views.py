@@ -33,7 +33,6 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     error = None
-
     if request.method == "POST":
         if not request.form['username'] or not request.form['password']:
             error='Please fill all fields'
@@ -60,7 +59,7 @@ def get_countries():
     country_list = [
         ('England', 'England'),
         ('Germany', 'Germany'),
-        ('United States', 'United States')
+        ('United States', 'United States'),
         ('Turkey', 'Turkey')
     ]
 
