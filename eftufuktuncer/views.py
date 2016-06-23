@@ -35,7 +35,7 @@ def register():
     error = None
     if request.method == "POST":
         if not request.form['username'] or not request.form['password']:
-            error='Please fill all fields'
+            error = 'Please fill all fields'
         else:
             try:
                 newuser = User(request.form['username'], request.form['password'], request.form.get('country'))
@@ -72,6 +72,7 @@ def get_countries():
         mimetype='application/json',
         status=200
     )
+
 
 @app.route('/logout')
 def logout():
